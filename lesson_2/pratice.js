@@ -88,15 +88,31 @@ return true
 
 */
 
-function palindrome(string) {
+
+function isAlphanumeric(str) {
+  return /^[a-zA-Z0-9]+$/.test(str);
+}
+
+function isRealPalindrome(string) {
   if (string.length <= 1) {
     return false;
   }
 
-  let midpt = Math.floor((string.length - 1) / 2);
+  let alphaString = '';
+
+  for (let i = 0; i < string.length; i += 1) {
+    if (isAlphanumeric(string[i])) {
+      alphaString += string[i].toLowerCase();
+    }
+  }
+
+  // console.log(alphaString);
+
+  let midpt = alphaString.length % 2 === 1 ? Math.floor((alphaString.length - 1) / 2) : alphaString.length / 2;
   
   for (let i = 0; i < midpt; i += 1) {
-    if (string[i] !== string[string.length - 1 - i]) {
+    // console.log(alphaString[i]);
+    if (alphaString[i] !== alphaString[alphaString.length - 1 - i]) {
       return false;
     }
   }
@@ -104,6 +120,12 @@ function palindrome(string) {
   return true;
 }
 
-console.log(palindrome('moms'));
-console.log(palindrome("mom"));
-console.log(palindrome('Madam'));
+// 
+
+console.log(isRealPalindrome('madam'));               // true
+console.log(isRealPalindrome('Madam'));               // true (case does not matter)
+console.log(isRealPalindrome("Madam, I'm Adam"));     // true (only alphanumerics matter)
+console.log(isRealPalindrome('356653'));              // true
+console.log(isRealPalindrome('356a653'));             // true
+console.log(isRealPalindrome('123ab321'));            // false
+
