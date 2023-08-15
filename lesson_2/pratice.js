@@ -120,12 +120,200 @@ function isRealPalindrome(string) {
   return true;
 }
 
-// 
+// Palindromic Numbers
 
-console.log(isRealPalindrome('madam'));               // true
-console.log(isRealPalindrome('Madam'));               // true (case does not matter)
-console.log(isRealPalindrome("Madam, I'm Adam"));     // true (only alphanumerics matter)
-console.log(isRealPalindrome('356653'));              // true
-console.log(isRealPalindrome('356a653'));             // true
-console.log(isRealPalindrome('123ab321'));            // false
+/*
 
+Input: Number
+Output: Boolean
+Explicit: 
+- Input is Number
+- Return Boolean
+- 
+Implicit: 
+- No empty input
+- Only Number input
+
+Questions:
+- Empty input possible? No
+- Non-Number input pass, how to handle? Don't need to worry
+
+Data Structures:
+Possible conversion to a String (datatype) 
+If converted to a string, use array?
+
+Algorithm:
+
+Convert Input to a String
+Use String or Array methods to determine if Number is palindromic
+
+
+
+*/
+
+function isPalindromic(number) {
+  let string = String(number);
+  let midpt = string.length % 2 === 1 ? Math.floor((string.length - 1) / 2) : string.length / 2;
+  
+  for (let i = 0; i < midpt; i += 1) {
+    // console.log(alphaString[i]);
+    if (string[i] !== string[string.length - 1 - i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// Running Totals
+
+/*
+
+Input: Array of Numbers
+Output: Array of Numbers 
+
+Explicit: 
+- (Output) Elements are going to be in increasing order from left to right
+- Output array same size as input array
+
+Implicit:
+- Size 1 element array returns itself
+
+?'s
+- Empty input array possible?
+- 
+
+Data Structures:
+- Output array (?) - might not need if mutating input array
+
+Algorithm:
+Iterate input array
+Save sum and replace the element as you iterate
+Return array
+
+sum = 0
+for loop index of array
+add to sum
+replace element with sum
+next index
+
+return array
+
+
+*/
+
+function runningTotal(input = []) {
+  let sum = 0;
+
+  let total = input.map((num) => {
+    sum = sum + num;
+    return sum;
+  })
+
+  return total;
+}
+
+// Letter Count (Part 1) 
+
+/*
+
+Write a function that takes a string consisting of zero or more space separated words and returns an object that shows the number of words of different sizes.
+
+Words consist of any sequence of non-space characters.
+
+Input: String
+Output: Object 
+
+Explicit: 
+=> Input string has 0 or more spaces
+=> Words consist of any sequence of non-space characters.
+
+
+
+Implicit:
+=> sizes are keys and number are the values
+
+?'s:
+Empty string possible? - return {}
+
+
+Data Structures:
+
+{} - output
+
+
+Algorithm:
+
+- Turn string into an array 
+- Count words of same length and add info into {}
+- return {}
+
+
+Declare/initialize {}
+Remove spaces from string and turn into array with split method
+Iterate through array
+Add object entries as such:
+Initialize empty string
+iterate through chars in string
+  if alpha => add to string
+  replace string in array 
+array[index].length if undefined in {} add 1 as val,
+else increment val
+
+return {}
+
+
+*/
+
+function wordSizes(string) {
+  if (string.length === 0) {
+    return {};
+  }
+  let obj = {};
+  let arr = string.split(' ');
+
+
+  for (let i = 0; i < arr.length; i += 1) {
+    let s = '';
+    for (let j = 0; j < arr[i].length; j += 1) {
+      if (isAlphanumeric(arr[i][j])) {
+        s += arr[i][j];
+      }
+      
+    }
+    arr[i] = s;
+
+    obj[arr[i].length] = obj[arr[i].length] === undefined ? 1 : obj[arr[i].length] += 1;
+  }
+
+  return obj;
+}
+
+// Letter Swap
+
+/*
+Given a string of words separated by spaces, write a function that swaps the first and last letters of every word.
+You may assume that every word contains at least one letter, and that the string will always contain at least one word. 
+You may also assume that each string contains nothing but words and spaces, and that there are no leading, trailing, or repeated spaces.
+
+Input: String
+Output: Anything? - Most likely string?
+
+Explicit: 
+- String at least one word and at least one letter
+- No leading, trailing, or repeated spaces
+
+Implicit:
+- Strings are not mutable, so returning new string of word(s)
+
+?'s:
+Function does not explicitly say return string, so are we returning anything? - Return swap string word
+
+Data Structures:
+- Array (string => to array for iteration of word(s))
+
+Algo
+
+
+
+*/
