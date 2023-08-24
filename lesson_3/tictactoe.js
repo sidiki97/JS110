@@ -59,10 +59,19 @@ function playerChoosesSquare(board) {
 
 function computerChoosesSquare(board) {
 
-  let randomIndex = Math.floor(Math.random() * emptySquares(board).length);
-
-  let square = emptySquares(board)[randomIndex];
-  board[square] = COMPUTER_MARKER;
+  // added defensive
+  let randomIndex = blockHumanWin(board);
+  console.log(randomIndex);
+  if (randomIndex === null) {
+    randomIndex = Math.floor(Math.random() * emptySquares(board).length);
+    let square = emptySquares(board)[randomIndex];
+    board[square] = COMPUTER_MARKER;
+  } else {
+    board[randomIndex] = COMPUTER_MARKER;
+  }
+  // console.log(randomIndex);
+  // let square = emptySquares(board)[randomIndex];
+  // board[square] = COMPUTER_MARKER;
 }
 
 
@@ -88,6 +97,7 @@ while (true) {
     playerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
 
+    
     computerChoosesSquare(board);
     if (someoneWon(board) || boardFull(board)) break;
   }
@@ -116,6 +126,70 @@ function someoneWon(board) {
 }
 
 
+function blockHumanWin(board){
+  let winningLines = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
+    [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
+    [1, 5, 9], [3, 5, 7]             // diagonals
+  ];
+
+  for (let line = 0; line < winningLines.length; line++) {
+    let [ sq1, sq2, sq3 ] = winningLines[line];
+
+    if (
+        board[sq1] === INITIAL_MARKER &&
+        board[sq2] === HUMAN_MARKER &&
+        board[sq3] === HUMAN_MARKER
+    ) {
+      return sq1;
+    } else if (
+        board[sq1] === HUMAN_MARKER &&
+        board[sq2] === HUMAN_MARKER &&
+        board[sq3] === INITIAL_MARKER
+    ) {
+      return sq3;
+    }
+  }
+
+  return null;
+}
+/*
+
+2 squares in a row
+
+  let winningLines = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
+    [1, 4, 7], [2, 5, 8], [3, 6, 9], // columns
+    [1, 5, 9], [3, 5, 7]             // diagonals
+  ];
+
+for (let line = 0; line < potentialHumanWin.length; line++) {
+  let [sq1, sq2, sq3] = potentialHumanWin[line];
+
+  if (
+        (
+          board[sq1] === HUMAN_MARKER &&
+          board[sq2] === HUMAN_MARKER &&
+          board[sq3] === INITIAL_MARKER
+        )
+        
+
+    ) {
+      return sq3;
+    } else if (
+              
+          board[sq1] === INITIAL_MARKER &&
+          board[sq2] === HUMAN_MARKER &&
+          board[sq3] === HUMAN_MARKER
+        
+    )
+    {
+      return sq1;
+    }
+}
+
+*/
+
 function detectWinner(board) {
   let winningLines = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9], // rows
@@ -143,3 +217,74 @@ function detectWinner(board) {
 
   return null;
 }
+
+
+function joinOr(arr = [], sep, and) {
+  if (arr.length > 2) {
+    if (sep) {
+      let str = arr.join(sep);
+      if (and){
+        return str.slice(0, str.length - 1) + and + str[str.length - 1];
+      }
+      return str.slice(0, str.length - 1) + 'or' + str[str.length - 1];
+    } else if (arr.length === 2) {
+      return arr[0] + ' or ' + arr[1];
+    }
+
+    return arr.join()
+  }
+}
+
+/*
+
+  input: upto 3 arguments
+  output: joined list with specific modifications
+
+  first argument: array
+  second argument: separator (optional)
+  third argument: diff or (optional)
+
+  Explicit rules:
+  - at least 2 nums in array, add 'or'
+  - 'or' is default placed before last element
+
+  ?'s
+  Can two element array have different separator than 'or'?
+
+  Datastructures 
+  - input array
+
+  Algo
+
+  Join elements in required format
+  Determine size of array
+    if >2 {guard clause}
+      if second arg exists
+        join the elements with separator if defineds
+        return slice string (exclude last character) + third arg('or') + last character
+      else 
+        join elements
+        return slice string (exclude last character) + third arg('or') + last character
+
+
+    else if (===2)
+    join elements with 'or'
+
+
+  return array.join()
+
+  Default: 
+  return array.join();
+
+
+
+*/
+
+
+
+// joinOr([1, 2, 3]);               // => "1, 2, or 3"
+// joinOr([1, 2, 3], '; ');         // => "1; 2; or 3"
+// joinOr([1, 2, 3], ', ', 'and');  // => "1, 2, and 3"
+// joinOr([]);                      // => ""
+// joinOr([5]);                     // => "5"
+// joinOr([1, 2]);                  // => "1 or 2"
