@@ -170,5 +170,380 @@ function evenValues(array) {
 
   return evens;
 }
-debugger;
-console.log(evenValues([1, 3, 4, 2, 4, 6, 5, 7, 9, 10, 12]));
+
+
+/*
+
+Input: String
+Output: String
+
+Explicit: 
+- Input String
+  - at least one word
+  - each word at least one letter
+  - words separated by spaces
+  - no trailing spaces
+
+- Replace first and last letter of each word in string
+
+Implicit:
+- 
+
+?'s
+
+Datastructures
+might not need initialize new array can return array from string
+
+Algorithm
+
+Switch the first and last letter of each word in string
+
+1. Split the string => array of words
+2. Use map method on array words to transform words
+  Callback will return a string that switches the first and last letter
+    return last character[] + word.slice(1, word.length - 2) + word[first character]
+3. join words with a space
+4. return string
+
+
+*/
+
+function swap(string) {
+  let words = string.split(' ');
+  let updatedWords = words.map((word) => {
+    if (word.length === 1) {
+      return word;
+    }
+    return word[word.length - 1] + word.slice(1, word.length - 1) + word[0];
+  })
+
+  let newString = updatedWords.join(' ');
+  return newString;
+}
+
+
+/*
+
+input: string
+output: number
+
+Explicit:
+
+input - all characters are numeric
+cannot use type casting or built-in functions
+
+Implicit:
+
+?'s
+
+Datastructures
+n/a
+
+Algorithm
+
+implicit type conversion
+when string used againt - / or * string converts to number
+
+
+
+*/
+
+function stringToInteger(string) {
+  return string / 1;
+}
+
+
+/*
+
+Input: Number
+Output: String 
+
+Explicit: 
+- 60 min in degree
+- 60 seconds in minute
+- Floating point number input
+
+Implicit:
+An input of 360 can have two possible values
+minutes and seconds calculation two places
+
+?'s
+How to determine minutes and seconds
+Ex: 76.73
+76 - degrees
+minutes - .73 * 60 = 43.8 => 43
+seconds - .8 * 60 => 48
+76˚ 43' 48"
+Numbers greater than 360 how to handle? - do we need to worry about?
+
+
+Examples
+how to pull minutes and seconds
+input % 1 => num to use in minute calculation
+minute calculation => take prev num and multiply to 60
+second calculation => take prev num and multiply to 60 
+
+Data Structures
+Strings
+Array => join later?
+
+Algorithm
+
+initialize a string
+
+Get Degrees
+Math.floor(input)
+add to string
+
+
+Get Minutes
+input % 1 => num
+num * 60 => min
+Math.floor(min)
+add to string
+
+
+Get Seconds
+min % 1 => num
+num * 60 => secs
+Math.floor(secs)
+add to string
+
+function(num){
+  num % 1 => num
+  num * 60 => num
+  return Math.floor(num)
+}
+
+return string
+
+*/
+
+function helper(num) {
+  let fraction = num % 1;
+  let anglePart = fraction * 60;
+  return anglePart;
+}
+
+function lessThanTen(num = 1) {
+  let numMod = Math.floor(num);
+  return numMod < 10 ? '0' + numMod : numMod;
+}
+
+function dms(num) {
+  let angle = '';
+
+  // Get Degrees
+  let degree = lessThanTen(num);
+  angle += degree + '˚ '
+
+  // Get Minutes
+  let minutes = helper(num);
+  let minuteMod = lessThanTen(minutes);
+  angle += minuteMod + '\' ';
+
+  // Get Seconds
+  let seconds = helper(minutes);
+  let secondMod = lessThanTen(seconds);
+  angle += secondMod + '\"';
+
+  return angle;
+
+}
+
+/*
+
+Sum of Digits:
+
+Input: number
+Output: number
+
+Explicit: 
+- positive number is input
+- no for, while, do..while loops 
+- method calls only
+
+Implicit: 
+- 
+
+?'s
+Can you array methods such as forEach, map, etc.?
+
+Datastructures
+- built in data types will be used
+
+
+Algorithm
+main 
+let sum = 0
+return helper(input, sum)
+
+
+Helper method
+if num === 0:
+return sum;
+
+inputs: num and sum
+
+sum += num mod 10
+
+num = Math.floor(num / 10);
+
+
+return recursive helper(num, sum)
+
+
+*/
+
+function sumHelper(num, sum) {
+  if (num === 0) {
+    return sum;
+  }
+  sum += num % 10;
+  num = Math.floor(num / 10);
+  return sumHelper(num, sum);
+}
+
+function sum(num) {
+  return sumHelper(num, 0);
+}
+
+/*
+Palindromic Substrings
+
+input: string
+output: ['palindromes']
+
+Explicit:
+- 
+
+*/
+
+/*
+
+All Substrings
+
+Input: string
+Output: Array/list of strings
+
+Explicit:
+- Output order
+  - order the returned list by where in the string the substring began
+  - return substring starting at specific index from shortest to longest
+
+  Implicit:
+  - no for ? below
+  - substring length from 1 to max.string length
+
+  ?'s
+  Spaces in input
+  - considered substring itself?
+
+  Datastructures
+  - Array
+
+
+  Algorithm
+
+  Two pointers solution?
+
+  let array = [];
+
+  Iterate the array 
+
+  Nested loop
+  Outer loop - all characters in array
+   inner loop - start at character in outer loop + 1 till end of string
+   Extract substrings at each iteration
+   slice method(outer loop, inner loop index + 1)
+   push to array
+
+
+*/
+
+function substrings(string) {
+  let arrayOfSubstrings = [];
+
+  for (let char = 0; char < string.length; char ++) {
+    for (let sub = char; sub < string.length; sub++) {
+      arrayOfSubstrings.push(string.slice(char, sub + 1));
+    }
+  }
+
+  return arrayOfSubstrings;
+}
+
+
+
+/*
+
+Palindromic Substrings
+
+Input: string
+Output: array
+
+Explicit:
+- return list of palindromic substrings
+- The substrings in the returned list should be sorted by their order of appearance in the input string
+- duplicate strings should be included multiple times
+- Consider all characters
+- Single characters are not palindromic
+
+Implicit:
+- Input is not empty string
+- Uppercase and lowercase matter
+
+?'s
+a space is considered a substring?
+
+Datastructures
+- List/array
+
+Algorithm
+
+Initialize array that will hold palindromic substring
+
+Use substrings function to extract all substrings
+Iterate substrings
+  Extract palindrome substrings
+    Helper function to determine palindrome
+      substring has to be at least length > 1
+      find midpt of string
+      iterate till midpt and compare to end
+      if not same before end
+        return false
+      return true
+    add to array
+Return palindrome substrings
+
+
+*/
+
+function helperPalindrome(string) { 
+  if (string.length === 1) return false;
+  for (let c = 0; c < Math.floor(string.length / 2); c++){
+    if (string[c] !== string[string.length - c - 1]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function palindromes(string) {
+  let allSubstrings = substrings(string);
+
+  let onlyPalindromes = allSubstrings.filter(substring => helperPalindrome(substring));
+
+  return onlyPalindromes;
+}
+
+console.log(palindromes('abcd'));       // []
+console.log(palindromes('madam'));      // [ "madam", "ada" ]
+
+console.log(palindromes('hello-madam-did-madam-goodbye'));
+// returns
+// [ "ll", "-madam-", "-madam-did-madam-", "madam", "madam-did-madam", "ada",
+//   "adam-did-mada", "dam-did-mad", "am-did-ma", "m-did-m", "-did-", "did",
+//   "-madam-", "madam", "ada", "oo" ]
+
+console.log(palindromes('knitting cassettes'));
